@@ -29,9 +29,7 @@ public class CityAndTownsControllerImpl {
 
     @GetMapping(value = "/gettowns/{city}", produces = "application/json")
     public List<String> getTowns(@PathVariable("city") String cityName) {
-        System.out.println(cityName);
         Long cityId = cityRepository.findCityByName(cityName).orElseThrow();
-        System.out.println(cityId);
         return townRepository.findTownsByCityId(cityId).orElseThrow();
     }
 

@@ -27,11 +27,11 @@ public class OrnekprojeApplication {
 	CommandLineRunner commandLineRunner(CustomerRepository customerRepository,
 										AddressRepository addressRepository) {
 		return args -> {
-			CustomerEntity customerEntity =
-					new CustomerEntity(
-							19750055956L, "Haluk", "Erd",
-							new Address("Adana", "Seyhan"));
-			customerRepository.save(customerEntity);
+//			CustomerEntity customerEntity =
+//					new CustomerEntity(
+//							19750055956L, "Haluk", "Erd",
+//							new Address("Adana", "Seyhan"));
+//			customerRepository.save(customerEntity);
 		};
 	}
 

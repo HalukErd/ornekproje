@@ -22,6 +22,7 @@ public class CustomerControllerImpl implements Controller<CustomerEntity> {
     @Override
     @GetMapping(produces = "application/json")
     public List<CustomerEntity> getAll() {
+        System.out.println("invoked getAll method");
         return customerService.getCustomers();
     }
 

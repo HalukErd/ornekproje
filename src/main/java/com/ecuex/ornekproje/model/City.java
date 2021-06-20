@@ -16,7 +16,7 @@ import java.util.List;
 
 @Table(name = "city")
 @Entity(name = "City")
-public class City {
+public class City { // edit here (index name)
 
     @Id
     @Column(
