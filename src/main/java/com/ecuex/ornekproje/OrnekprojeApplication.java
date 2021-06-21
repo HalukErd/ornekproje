@@ -34,6 +34,4 @@ public class OrnekprojeApplication {
 //			customerRepository.save(customerEntity);
 		};
 	}
-
-
 }
