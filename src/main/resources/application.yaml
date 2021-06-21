@@ -11,11 +11,11 @@ spring:
     hibernate:
       ddl-auto: update
 
-  datasource:
-    url: jdbc:postgresql://localhost:5433/postgres
-    username: postgres
-    password: superpassword
-    driver-class-name: org.postgresql.Driver
+#  datasource:
+#    url: jdbc:postgresql://localhost:5433/postgres
+#    username: postgres
+#    password: superpassword
+#    driver-class-name: org.postgresql.Driver
 
 server:
-  port: 8080
+  port: 8085

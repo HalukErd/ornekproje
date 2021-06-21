@@ -1,6 +1,6 @@
 package com.ecuex.ornekproje.controller;
 
-import com.ecuex.ornekproje.model.CustomerEntity;
+import com.ecuex.ornekproje.model.CustomerDTO;
 import com.ecuex.ornekproje.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,11 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("api/customers")
-public class CustomerControllerImpl implements ControllerWithResponseEntity<CustomerEntity, Long> {
+public class CustomerControllerImpl implements ControllerWithResponseEntity<CustomerDTO, Long> {
 
     CustomerService customerService;
 
@@ -23,45 +24,45 @@ public class CustomerControllerImpl implements ControllerWithResponseEntity<Cust
 
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<CustomerEntity>> getAll() {
+    public ResponseEntity<List<CustomerDTO>> getAll() {
         System.out.println("invoked getAll method");
         List customers = customerService.getCustomers();
         if (customers == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        ResponseEntity<List<CustomerEntity>> resultCustomerEntity = new ResponseEntity<>(customers, HttpStatus.OK);
-        return resultCustomerEntity;
+        ResponseEntity<List<CustomerDTO>> resultCustomerDTO = new ResponseEntity<>(customers, HttpStatus.OK);
+        return resultCustomerDTO;
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<CustomerEntity> save(@RequestBody CustomerEntity customerEntity) {
-        CustomerEntity resultCustomerEntity = (CustomerEntity) customerService.saveCustomer(customerEntity);
-        if (resultCustomerEntity == null) {
+    public ResponseEntity<CustomerDTO> save(@RequestBody @Valid CustomerDTO customerDTO) {
+        CustomerDTO resultCustomerDTO = (CustomerDTO) customerService.saveCustomer(customerDTO);
+        if (resultCustomerDTO == null) {
             System.out.println("bad req");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        ResponseEntity<CustomerEntity> resultResponse = new ResponseEntity<>(resultCustomerEntity, HttpStatus.OK);
+        ResponseEntity<CustomerDTO> resultResponse = new ResponseEntity<>(resultCustomerDTO, HttpStatus.OK);
         return resultResponse;
     }
 
     @Override
     @GetMapping(value = "{tckn}")
-    public ResponseEntity<CustomerEntity> get(@PathVariable("tckn") Long tckn) {
-        CustomerEntity resultCustomerEntity = (CustomerEntity) customerService.getCustomer(tckn);
-        if (resultCustomerEntity == null) {
+    public ResponseEntity<CustomerDTO> get(@PathVariable("tckn") Long tckn) {
+        CustomerDTO resultCustomerDTO = (CustomerDTO) customerService.getCustomer(tckn);
+        if (resultCustomerDTO == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        ResponseEntity<CustomerEntity> resultResponse = new ResponseEntity<>(resultCustomerEntity, HttpStatus.OK);
+        ResponseEntity<CustomerDTO> resultResponse = new ResponseEntity<>(resultCustomerDTO, HttpStatus.OK);
         return resultResponse;
     }
 
     @PutMapping
-    public ResponseEntity<CustomerEntity> put(@RequestBody CustomerEntity customerEntity) {
-        CustomerEntity resultCustomerEntity = (CustomerEntity) customerService.saveCustomer(customerEntity);
-        if (resultCustomerEntity == null) {
+    public ResponseEntity<CustomerDTO> put(@RequestBody @Valid CustomerDTO customerDTO) {
+        CustomerDTO resultCustomerDTO = (CustomerDTO) customerService.saveCustomer(customerDTO);
+        if (resultCustomerDTO == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        ResponseEntity<CustomerEntity> resultResponse = new ResponseEntity<>(resultCustomerEntity, HttpStatus.OK);
+        ResponseEntity<CustomerDTO> resultResponse = new ResponseEntity<>(resultCustomerDTO, HttpStatus.OK);
         return resultResponse;
     }
 

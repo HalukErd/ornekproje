@@ -1,6 +1,7 @@
 package com.ecuex.ornekproje.service;
 
 import com.ecuex.ornekproje.model.CustomerEntity;
+import com.ecuex.ornekproje.model.CustomerDTO;
 import com.ecuex.ornekproje.repository.AddressRepository;
 import com.ecuex.ornekproje.repository.CustomerRepository;
 import org.modelmapper.ModelMapper;
@@ -8,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("CustomerServiceImpl")
-public class CustomerServiceImpl implements CustomerService<CustomerEntity> {
+public class CustomerServiceImpl implements CustomerService<CustomerDTO> {
 
     CustomerRepository customerRepository;
     AddressRepository addressRepository;
@@ -24,26 +26,38 @@ public class CustomerServiceImpl implements CustomerService<CustomerEntity> {
     }
 
     @Override
-    public List<CustomerEntity> getCustomers() {
-        return customerRepository.findAll();
+    public List<CustomerDTO> getCustomers() {
+        List<CustomerEntity> customerEntities = customerRepository.findAll();
+        List<CustomerDTO> result = customerEntities
+                .stream()
+                .map(s -> modelMapper.map(s, CustomerDTO.class))
+                .collect(Collectors.toList());
+
+        return result;
     }
 
     @Override
-    public CustomerEntity saveCustomer(CustomerEntity customerEntity) {
-        if (customerEntity.getName().isEmpty() || customerEntity.getName() == null) {
-            return null;
-        }
-        return customerRepository.save(customerEntity);
+    public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
+//        if (customerDTO.getName().isEmpty() || customerDTO.getName() == null) {
+//            return null;
+//        }
+        CustomerEntity customerEntity = modelMapper.map(customerDTO, CustomerEntity.class);
+        CustomerDTO result = modelMapper.map(customerRepository.save(customerEntity), CustomerDTO.class);
+        return result;
     }
 
     @Override
-    public CustomerEntity getCustomer(Long tckn) {
-        return customerRepository.findById(tckn).orElseThrow();
+    public CustomerDTO getCustomer(Long tckn) {
+        CustomerEntity customerEntity = customerRepository.findById(tckn).orElseThrow();
+        CustomerDTO result = modelMapper.map(customerEntity, CustomerDTO.class);
+        return result;
     }
 
     @Override
-    public CustomerEntity putCustomer(CustomerEntity customerEntity) {
-        return customerRepository.save(customerEntity);
+    public CustomerDTO putCustomer(CustomerDTO customerDTO) {
+        CustomerEntity customerEntity = modelMapper.map(customerDTO, CustomerEntity.class);
+        CustomerDTO result = modelMapper.map(customerRepository.save(customerEntity), CustomerDTO.class);
+        return result;
     }
 
     @Override
