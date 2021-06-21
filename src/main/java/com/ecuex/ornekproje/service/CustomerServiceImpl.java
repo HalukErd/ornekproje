@@ -3,6 +3,7 @@ package com.ecuex.ornekproje.service;
 import com.ecuex.ornekproje.model.CustomerEntity;
 import com.ecuex.ornekproje.repository.AddressRepository;
 import com.ecuex.ornekproje.repository.CustomerRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +14,13 @@ public class CustomerServiceImpl implements CustomerService<CustomerEntity> {
 
     CustomerRepository customerRepository;
     AddressRepository addressRepository;
+    ModelMapper modelMapper;
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, AddressRepository addressRepository) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, AddressRepository addressRepository, ModelMapper modelMapper) {
         this.customerRepository = customerRepository;
         this.addressRepository = addressRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -31,7 +34,6 @@ public class CustomerServiceImpl implements CustomerService<CustomerEntity> {
             return null;
         }
         return customerRepository.save(customerEntity);
-
     }
 
     @Override
