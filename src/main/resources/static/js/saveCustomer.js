@@ -29,7 +29,6 @@ $(document).ready(function () {
 
     function saveCustomer() {
         urlCustomerApi = contextPath + "api/customers";
-        alert(urlCustomerApi);
         tcknValue = tcknTextBox.val();
         nameValue = customerName.val();
         lastNameValue = customerLastName.val();
@@ -57,6 +56,9 @@ $(document).ready(function () {
                     window.location.replace(contextPath + "registrationSuccess" + "#customerSaved");
                 },
                 400: function () {
+                    window.location.replace(contextPath + "redirection" + "#customerSaveFailed");
+                },
+                500: function () {
                     window.location.replace(contextPath + "redirection" + "#customerSaveFailed");
                 }
             }

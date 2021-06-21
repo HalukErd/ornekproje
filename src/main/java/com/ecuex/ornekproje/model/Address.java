@@ -3,6 +3,7 @@ package com.ecuex.ornekproje.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -28,7 +29,10 @@ public class Address {
             name = "id"
     )
     private Long id;
+
+    @NotBlank
     private String city;
+    @NotBlank
     private String town;
 
     public Address(String city, String town) {

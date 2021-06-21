@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -17,11 +18,10 @@ import javax.validation.constraints.Size;
 public class CustomerDTO {
 
     private Long tckn;
-    @NotBlank(message = "must not be empty")
     private String name;
-    @NotBlank(message = "must not be empty")
     private String lastName;
 
+    @Valid
     private Address address;
 
 }
