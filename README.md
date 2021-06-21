@@ -1,5 +1,5 @@
 # ornekproje
-Initial
+
 Docker Application must be started.
 Type "mvn package"
 docker-compose is related with plugin.
