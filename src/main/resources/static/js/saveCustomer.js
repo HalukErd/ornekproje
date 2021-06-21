@@ -1,11 +1,16 @@
-
 $(document).ready(function () {
+    form = $("#saveCustomer");
     saveCustomerButton = $("#saveCustomerButton");
     citiesDropDown = $("#citiesDropDown");
     townsDropDown = $("#townsDropDown");
     tcknTextBox = $("#tcknTextBox");
     customerName = $("#customerName");
     customerLastName = $("#customerLastName");
+
+    var hash = window.location.hash;
+    if (hash === "#customerSaveFailed") {
+        $("#failMessage").show("swing");
+    }
 
     getCities();
 
@@ -17,13 +22,14 @@ $(document).ready(function () {
         }
     });
 
-
     citiesDropDown.change(function () {
         getTowns();
     });
 
+
     function saveCustomer() {
         urlCustomerApi = contextPath + "api/customers";
+        alert(urlCustomerApi);
         tcknValue = tcknTextBox.val();
         nameValue = customerName.val();
         lastNameValue = customerLastName.val();
@@ -44,42 +50,27 @@ $(document).ready(function () {
             type: "POST",
             url: urlCustomerApi,
             data: JSON.stringify(jsonData),
-            contentType: 'application/json'
-        }).done(function () {
-            // redirectionSuccess();
-            $(location).attr('href', contextPath + "registrationSuccess", 'myheader', 'success');
-        }).fail(function () {
-            window.location.href = contextPath + "saveCustomer";
+            contentType: 'application/json',
+
+            statusCode: {
+                200: function () {
+                    window.location.replace(contextPath + "registrationSuccess" + "#customerSaved");
+                },
+                400: function () {
+                    window.location.replace(contextPath + "redirection" + "#customerSaveFailed");
+                }
+            }
         });
-    }
-
-    function redirectionSuccess() {
-        urlRedirection = contextPath + "saveCustomer";
-
-        $.ajax({
-            type: "GET",
-            url: urlRedirection,
-            headers: {"myheader": "success"}
-        });
-    }
-
-    function redirectionFailedSave() {
-        urlRedirection = contextPath + "registrationSuccess";
-
-        $(location).attr('href', urlRedirection, 'myheader', 'failed');
     }
 
     function getCities() {
         urlGetCities = contextPath + "api/cityandtowns/getcities";
-
 
         $.get(urlGetCities, function (responseJson) {
 
             $.each(responseJson, function (index, city) {
                 $("<option>").text(city).appendTo(citiesDropDown);
             });
-        }).done(function () {
-            // getTowns();
         }).fail(function () {
             alert('failed to load cities');
         });

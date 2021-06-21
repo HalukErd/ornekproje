@@ -4,13 +4,15 @@ import com.ecuex.ornekproje.model.CustomerEntity;
 import com.ecuex.ornekproje.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/customers")
-public class CustomerControllerImpl implements Controller<CustomerEntity> {
+public class CustomerControllerImpl implements ControllerWithResponseEntity<CustomerEntity, Long> {
 
     CustomerService customerService;
 
@@ -19,35 +21,56 @@ public class CustomerControllerImpl implements Controller<CustomerEntity> {
         this.customerService = customerService;
     }
 
-    @Override
+
     @GetMapping(produces = "application/json")
-    public List<CustomerEntity> getAll() {
+    public ResponseEntity<List<CustomerEntity>> getAll() {
         System.out.println("invoked getAll method");
-        return customerService.getCustomers();
+        List customers = customerService.getCustomers();
+        if (customers == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        ResponseEntity<List<CustomerEntity>> resultCustomerEntity = new ResponseEntity<>(customers, HttpStatus.OK);
+        return resultCustomerEntity;
     }
 
-    @Override
     @PostMapping(consumes = "application/json")
-    public CustomerEntity save(@RequestBody CustomerEntity customerEntity) {
-        return (CustomerEntity) customerService.saveCustomer(customerEntity);
+    public ResponseEntity<CustomerEntity> save(@RequestBody CustomerEntity customerEntity) {
+        CustomerEntity resultCustomerEntity = (CustomerEntity) customerService.saveCustomer(customerEntity);
+        if (resultCustomerEntity == null) {
+            System.out.println("bad req");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        ResponseEntity<CustomerEntity> resultResponse = new ResponseEntity<>(resultCustomerEntity, HttpStatus.OK);
+        return resultResponse;
     }
 
     @Override
     @GetMapping(value = "{tckn}")
-    public CustomerEntity get(@PathVariable("tckn") Long tckn) {
-        return (CustomerEntity) customerService.getCustomer(tckn);
+    public ResponseEntity<CustomerEntity> get(@PathVariable("tckn") Long tckn) {
+        CustomerEntity resultCustomerEntity = (CustomerEntity) customerService.getCustomer(tckn);
+        if (resultCustomerEntity == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        ResponseEntity<CustomerEntity> resultResponse = new ResponseEntity<>(resultCustomerEntity, HttpStatus.OK);
+        return resultResponse;
     }
 
-    @Override
     @PutMapping
-    public CustomerEntity put(@RequestBody CustomerEntity customerEntity) {
-        return (CustomerEntity) customerService.putCustomer(customerEntity);
+    public ResponseEntity<CustomerEntity> put(@RequestBody CustomerEntity customerEntity) {
+        CustomerEntity resultCustomerEntity = (CustomerEntity) customerService.saveCustomer(customerEntity);
+        if (resultCustomerEntity == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        ResponseEntity<CustomerEntity> resultResponse = new ResponseEntity<>(resultCustomerEntity, HttpStatus.OK);
+        return resultResponse;
     }
 
-    @Override
     @DeleteMapping(value = "{tckn}")
-    public boolean delete(@PathVariable("tckn") Long tckn) {
-        customerService.deleteCustomer(tckn);
-        return true; // edit here
+    public ResponseEntity delete(@PathVariable("tckn") Long tckn) {
+        boolean foundAndDeleted = customerService.deleteCustomer(tckn);
+        if (!foundAndDeleted) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(String.valueOf(tckn), HttpStatus.OK);
     }
 }

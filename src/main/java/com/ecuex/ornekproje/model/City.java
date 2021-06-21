@@ -14,7 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 
-@Table(name = "city")
+@Table(
+        name = "city",
+        indexes = @Index(columnList = "city_name")
+)
 @Entity(name = "City")
 public class City { // edit here (index name)
 

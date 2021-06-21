@@ -10,15 +10,21 @@ $(document).ready(function () {
 
     getCities();
 
-    findCustomerButton.click(function () {
+    var hash = window.location.hash;
+    if (hash === "#customerUpdateFailed") {
+        $("#failMessage").show("swing");
+    }
 
-        updatePropDisabledStatus();
-        urlGetCustomer = contextPath + "api/customers/" + tcknTextBox.val();
+    findCustomerButton.click(function () {
+        let urlGetCustomer = contextPath + "api/customers/" + tcknTextBox.val();
         $.get(urlGetCustomer, function (responseJson) {
+            updatePropDisabledStatus();
             customerName.val(responseJson.name);
             customerLastName.val(responseJson.lastName);
             citiesDropDown.val(responseJson.address.city);
-            getTownsAndSelect(responseJson.address.town)
+            getTownsAndSelect(responseJson.address.town);
+
+
         }).fail(function () {
             alert('Customer Get Failed');
         })
@@ -46,12 +52,15 @@ $(document).ready(function () {
             type: "PUT",
             url: urlCustomerApi,
             data: JSON.stringify(jsonData),
-            contentType: 'application/json'
-        }).done(function () {
-            // redirectionSuccess();
-            $(location).attr('href', contextPath + "registrationSuccess", 'myheader', 'success');
-        }).fail(function () {
-            window.location.href = contextPath + "saveCustomer";
+            contentType: 'application/json',
+            statusCode: {
+                200: function () {
+                    window.location.replace(contextPath + "registrationSuccess" + "#customerSaved");
+                },
+                400: function () {
+                    window.location.replace( contextPath + "redirection" + "#customerUpdateFailed");
+                }
+            }
         });
     });
 

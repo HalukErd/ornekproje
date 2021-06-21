@@ -11,11 +11,13 @@ import javax.persistence.*;
 
 @Entity(name = "CustomerEntity")
 @Table(
-        name = "customers"
+        name = "customers",
+        indexes = @Index(columnList = "tckn")
 )
 public class CustomerEntity {
 
     @Id
+    @Column(name = "tckn")
     private Long tckn;
     private String name;
     private String lastName;

@@ -27,7 +27,11 @@ public class CustomerServiceImpl implements CustomerService<CustomerEntity> {
 
     @Override
     public CustomerEntity saveCustomer(CustomerEntity customerEntity) {
+        if (customerEntity.getName().isEmpty() || customerEntity.getName() == null) {
+            return null;
+        }
         return customerRepository.save(customerEntity);
+
     }
 
     @Override
@@ -42,7 +46,11 @@ public class CustomerServiceImpl implements CustomerService<CustomerEntity> {
 
     @Override
     public boolean deleteCustomer(Long tckn) {
+        boolean exists = customerRepository.existsById(tckn);
+        if (!exists) {
+            return false;
+        }
         customerRepository.deleteById(tckn);
-        return true; // edit here
+        return true;
     }
 }

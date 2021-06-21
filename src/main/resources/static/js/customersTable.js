@@ -7,7 +7,6 @@ $(document).ready(function () {
     var endRow = '</td></tr>';
 
     urlToGetAllCustomers = contextPath + "api/customers";
-
     $.get(urlToGetAllCustomers, function (responseAllCustomersJson) {
         $('#thetable tr').not(':first').not(':last').remove();
         $.each(responseAllCustomersJson, function (index, customerJson) {
@@ -22,13 +21,14 @@ $(document).ready(function () {
         });
         $("table tr:first").after(tableString);
     })
-
-
 })
 
-$(document).on('click', '.btn-delete', function () {
-    deleteCustomer(this.id);
-    $(this).closest('tr').remove();
+$(document).on('click', '.btn-delete', function (e) {
+    e.preventDefault();
+    if (window.confirm("Are you sure?")) {
+        deleteCustomer(this.id);
+        $(this).closest('tr').remove();
+    }
 })
 
 function deleteCustomer(tckn) {
@@ -37,5 +37,6 @@ function deleteCustomer(tckn) {
     $.ajax({
         type: "DELETE",
         url: urlToDelete
+
     });
 }

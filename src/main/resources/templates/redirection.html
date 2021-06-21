@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Customer Table</title>
+    <title>Redirection</title>
+
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"/>
     <script
@@ -13,34 +14,10 @@
     <script
             src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 
-    <script th:src="@{/js/customersTable.js}"></script>
+    <script th:src="@{/js/redirection.js}"></script>
     <script type="text/javascript">
         var contextPath = "[[@{/}]]";
     </script>
-
 </head>
-<body>
 
-<div id="postResultDiv" align="center"></div>
-<div class="container">
-    <h2>CUSTOMER TABLE</h2>
-    <form id="saveCustomer">
-        <div class="form-group">
-            <table id="customersTable" style="width: 100%">
-                <tr>
-                    <th>TCKN</th>
-                    <th>Name</th>
-                    <th>LastName</th>
-                    <th>City</th>
-                    <th>Town</th>
-                    <th>Delete</th>
-                </tr>
-
-
-            </table>
-        </div>
-
-    </form>
-</div>
-</body>
 </html>

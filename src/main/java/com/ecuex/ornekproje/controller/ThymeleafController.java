@@ -27,4 +27,9 @@ public class ThymeleafController {
     public String getCustomers() {
         return "getCustomers";
     }
+
+    @GetMapping("redirection")
+    public String redirection() {
+        return "redirection";
+    }
 }
